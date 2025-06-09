@@ -26,8 +26,8 @@ embedding_function = model.dense.SentenceTransformerEmbeddingFunction(
 # embedding_function = model.dense.OpenAIEmbeddingFunction(model_name='text-embedding-3-large')
 
 # 文件路径
-file_path = "backend/data/SNOMED_5000.csv"
-db_path = "backend/db/snomed_bge_m3.db"
+file_path = "backend/data/finance_standard_terms.csv"
+db_path = "backend/db/finance_bge_m3.db"
 
 # 连接到 Milvus
 client = MilvusClient(db_path)
@@ -51,22 +51,22 @@ vector_dim = len(sample_embedding)
 fields = [
     FieldSchema(name="id", dtype=DataType.INT64, is_primary=True, auto_id=True),
     FieldSchema(name="vector", dtype=DataType.FLOAT_VECTOR, dim=vector_dim), # BGE-m3 最重要
-    FieldSchema(name="concept_id", dtype=DataType.VARCHAR, max_length=50),
+    #FieldSchema(name="concept_id", dtype=DataType.VARCHAR, max_length=50),
     FieldSchema(name="concept_name", dtype=DataType.VARCHAR, max_length=200),
-    FieldSchema(name="domain_id", dtype=DataType.VARCHAR, max_length=20),
-    FieldSchema(name="vocabulary_id", dtype=DataType.VARCHAR, max_length=20),
+    #FieldSchema(name="domain_id", dtype=DataType.VARCHAR, max_length=20),
+    #FieldSchema(name="vocabulary_id", dtype=DataType.VARCHAR, max_length=20),
     FieldSchema(name="concept_class_id", dtype=DataType.VARCHAR, max_length=20),
-    FieldSchema(name="standard_concept", dtype=DataType.VARCHAR, max_length=1),
-    FieldSchema(name="concept_code", dtype=DataType.VARCHAR, max_length=50),
-    FieldSchema(name="valid_start_date", dtype=DataType.VARCHAR, max_length=10),
-    FieldSchema(name="valid_end_date", dtype=DataType.VARCHAR, max_length=10),
+    #FieldSchema(name="standard_concept", dtype=DataType.VARCHAR, max_length=1),
+    #FieldSchema(name="concept_code", dtype=DataType.VARCHAR, max_length=50),
+    #FieldSchema(name="valid_start_date", dtype=DataType.VARCHAR, max_length=10),
+    #FieldSchema(name="valid_end_date", dtype=DataType.VARCHAR, max_length=10),
     # FieldSchema(name="full_name", dtype=DataType.VARCHAR, max_length=500), # FSN
     # FieldSchema(name="synonyms", dtype=DataType.VARCHAR, max_length=1000), # 同义词
     # FieldSchema(name="definitions", dtype=DataType.VARCHAR, max_length=1000), # 定义
     FieldSchema(name="input_file", dtype=DataType.VARCHAR, max_length=500),
 ]
 schema = CollectionSchema(fields, 
-                          "SNOMED-CT Concepts", 
+                          "Finance Concepts", 
                           enable_dynamic_field=True)
 
 # 如果集合不存在，创建集合
@@ -129,15 +129,15 @@ for start_idx in tqdm(range(0, len(df), batch_size), desc="Processing batches"):
         {
             # "id": idx + start_idx,
             "vector": embeddings[idx],
-            "concept_id": str(row['concept_id']),
+            #"concept_id": str(row['concept_id']),
             "concept_name": str(row['concept_name']),
-            "domain_id": str(row['domain_id']),
-            "vocabulary_id": str(row['vocabulary_id']),
+            #"domain_id": str(row['domain_id']),
+            #"vocabulary_id": str(row['vocabulary_id']),
             "concept_class_id": str(row['concept_class_id']),
-            "standard_concept": str(row['standard_concept']),
-            "concept_code": str(row['concept_code']),
-            "valid_start_date": str(row['valid_start_date']),
-            "valid_end_date": str(row['valid_end_date']),
+            #"standard_concept": str(row['standard_concept']),
+            #"concept_code": str(row['concept_code']),
+            #"valid_start_date": str(row['valid_start_date']),
+            #"valid_end_date": str(row['valid_end_date']),
             # "invalid_reason": str(row['invalid_reason']),
             # "full_name": str(row['Full Name']),
             # "synonyms": str(row['Synonyms']),
@@ -160,7 +160,7 @@ logging.info("Insert process completed.")
 
 # 示例查询
 # query = "somatic hallucination"
-query = "SOB"
+query = "Bond"
 query_embeddings = embedding_function([query])
 
 
@@ -174,16 +174,16 @@ search_result = client.search(
                    "concept_class_id", 
                    ]
 )
-logging.info(f"Search result for 'Somatic hallucination': {search_result}")
+logging.info(f"Search result for 'Bond': {search_result}")
 
 # 查询所有匹配的实体
 query_result = client.query(
     collection_name=collection_name,
-    filter="concept_name == 'Dyspnea'",
+    filter="concept_name == 'Bond'",
     output_fields=["concept_name", 
                 #    "synonyms", 
                    "concept_class_id", 
                    ],
     limit=5
 )
-logging.info(f"Query result for concept_name == 'Dyspnea': {query_result}")
+logging.info(f"Query result for concept_name == 'Bond': {query_result}")
