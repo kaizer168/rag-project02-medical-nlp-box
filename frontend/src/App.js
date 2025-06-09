@@ -11,7 +11,7 @@ const WelcomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <img src="/images/medical-img.png" alt="医疗记录处理" className="w-96 h-auto mb-8" />
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">欢迎使用医疗记录处理工具箱</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-4">欢迎使用金融报告处理工具箱</h1>
       <p className="text-xl text-gray-600">请从左侧菜单选择要使用的功能</p>
     </div>
   );

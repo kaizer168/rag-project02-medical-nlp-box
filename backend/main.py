@@ -185,7 +185,7 @@ async def standardization(input: TextInput):
         # 获取识别到的实体
         entities = ner_results.get('entities', [])
         if not entities:
-            return {"message": "No medical terms have been recognized", "standardized_terms": []}
+            return {"message": "No financial terms have been recognized", "standardized_terms": []}
 
         # 标准化每个实体
         standardized_results = []
@@ -198,7 +198,7 @@ async def standardization(input: TextInput):
             })
 
         return {
-            "message": f"{len(entities)} medical terms have been recognized and standardized",
+            "message": f"{len(entities)} financial terms have been recognized and standardized",
             "standardized_terms": standardized_results
         }
 
@@ -284,7 +284,7 @@ async def generate_medical_content(input: GenInput):
         else:
             raise HTTPException(status_code=400, detail="Invalid method")
     except Exception as e:
-        logger.error(f"Error in medical content generation: {str(e)}")
+        logger.error(f"Error in financial content generation: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # 启动服务器

@@ -130,68 +130,15 @@ const NERPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">医疗命名实体识别 🏥</h1>
+      <h1 className="text-3xl font-bold mb-6">金融命名实体识别 🏥</h1>
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">输入医疗文本</h2>
+        <h2 className="text-xl font-semibold mb-4">输入金融文本</h2>
         <TextInput
           value={input}
           onChange={(e) => setInput(e.target.value)}
           rows={4}
-          placeholder="请输入需要进行命名实体识别的医疗文本..."
-        />
-        
-        <h3 className="text-lg font-semibold mb-2">医疗术语类型</h3>
-        <div className="mb-4">
-          <label>
-            <input
-              type="checkbox"
-              name="symptom"
-              checked={termTypes.symptom}
-              onChange={handleTermTypeChange}
-            />
-            症状
-          </label>
-          <label className="ml-4">
-            <input
-              type="checkbox"
-              name="disease"
-              checked={termTypes.disease}
-              onChange={handleTermTypeChange}
-            />
-            疾病
-          </label>
-          <label className="ml-4">
-            <input
-              type="checkbox"
-              name="therapeuticProcedure"
-              checked={termTypes.therapeuticProcedure}
-              onChange={handleTermTypeChange}
-            />
-            治疗程序
-          </label>
-          <label className="ml-4">
-            <input
-              type="checkbox"
-              name="allMedicalTerms"
-              checked={termTypes.allMedicalTerms}
-              onChange={handleTermTypeChange}
-            />
-            所有医疗术语
-          </label>
-        </div>
-
-        <h3 className="text-lg font-semibold mb-2">选项</h3>
-        <div className="mb-4">
-          <label>
-            <input
-              type="checkbox"
-              name="combineBioStructure"
-              checked={options.combineBioStructure}
-              onChange={handleOptionChange}
-            />
-            合并生物结构和症状
-          </label>
-        </div>
+          placeholder="请输入需要进行命名实体识别的金融文本..."
+        />              
 
         <button
           onClick={handleSubmit}
